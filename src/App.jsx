@@ -6,7 +6,6 @@ import './App.css';
 
 function App() {
   useEffect(() => {
-    // Registrar Service Worker (solo en cliente)
     if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
       navigator.serviceWorker
         .register('/sw.js')

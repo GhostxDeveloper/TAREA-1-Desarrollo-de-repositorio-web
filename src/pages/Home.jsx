@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import localforage from 'localforage';
 import './Home.css';
 
-// URL del backend (funciona tanto en HTTP como HTTPS)
 const API_URL = 'http://localhost:3001';
 
 function Home() {
@@ -12,17 +11,15 @@ function Home() {
   const [location, setLocation] = useState(null);
   const [notification, setNotification] = useState('');
 
-  // Cargar tareas al iniciar
+
   useEffect(() => {
     loadTodos();
 
-    // Detectar estado online/offline
     const handleOnline = () => setIsOnline(true);
     const handleOffline = () => setIsOnline(false);
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
 
-    // Solicitar permiso de notificaciones
     requestNotificationPermission();
 
     return () => {
@@ -31,22 +28,18 @@ function Home() {
     };
   }, []);
 
-  // Cargar tareas desde almacenamiento local o API
   const loadTodos = async () => {
     try {
-      // Primero cargar desde almacenamiento local
       const localTodos = await localforage.getItem('todos');
       if (localTodos && localTodos.length > 0) {
         setTodos(localTodos);
       }
 
-      // Si hay internet, sincronizar con el backend
       if (navigator.onLine) {
         try {
           const response = await fetch(`${API_URL}/todos`);
           const data = await response.json();
           setTodos(data);
-          // Actualizar almacenamiento local
           await localforage.setItem('todos', data);
         } catch (error) {
           console.log('Backend no disponible, usando datos locales');
@@ -54,7 +47,6 @@ function Home() {
       }
     } catch (error) {
       console.error('Error cargando tareas:', error);
-      // Cargar desde almacenamiento local como fallback
       const localTodos = await localforage.getItem('todos');
       if (localTodos) {
         setTodos(localTodos);
@@ -62,7 +54,6 @@ function Home() {
     }
   };
 
-  // Agregar nueva tarea
   const addTodo = async () => {
     if (!input.trim()) return;
 
@@ -76,10 +67,8 @@ function Home() {
     setTodos(updatedTodos);
     setInput('');
 
-    // Guardar en almacenamiento local
     await localforage.setItem('todos', updatedTodos);
 
-    // Si hay internet, guardar en backend
     if (navigator.onLine) {
       try {
         console.log('📤 Enviando al backend:', newTodo);
@@ -99,11 +88,9 @@ function Home() {
       }
     }
 
-    // Enviar notificación
     showNotification('Nueva tarea agregada', input);
   };
 
-  // Marcar tarea como completada
   const toggleTodo = async (id) => {
     const updatedTodos = todos.map(todo =>
       todo.id === id ? { ...todo, completed: !todo.completed } : todo
@@ -111,7 +98,6 @@ function Home() {
     setTodos(updatedTodos);
     await localforage.setItem('todos', updatedTodos);
 
-    // Si hay internet, actualizar en backend
     if (navigator.onLine) {
       try {
         const todo = updatedTodos.find(t => t.id === id);
@@ -124,7 +110,6 @@ function Home() {
         console.log('Respuesta del PUT:', response.status);
         if (!response.ok && response.status === 404) {
           console.log('⚠️ Tarea no existe en backend, creándola...');
-          // Si no existe, crearla
           await fetch(`${API_URL}/todos`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -137,13 +122,11 @@ function Home() {
     }
   };
 
-  // Eliminar tarea
   const deleteTodo = async (id) => {
     const updatedTodos = todos.filter(todo => todo.id !== id);
     setTodos(updatedTodos);
     await localforage.setItem('todos', updatedTodos);
 
-    // Si hay internet, eliminar del backend
     if (navigator.onLine) {
       try {
         console.log('🗑️ Eliminando del backend, ID:', id);
@@ -166,7 +149,6 @@ function Home() {
     showNotification('Tarea eliminada', 'Una tarea ha sido eliminada');
   };
 
-  // Obtener geolocalización (Hardware API)
   const getLocation = () => {
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition(
@@ -189,14 +171,12 @@ function Home() {
     }
   };
 
-  // Solicitar permiso para notificaciones
   const requestNotificationPermission = async () => {
     if ('Notification' in window && Notification.permission === 'default') {
       await Notification.requestPermission();
     }
   };
 
-  // Mostrar notificación
   const showNotification = (title, body) => {
     if ('Notification' in window && Notification.permission === 'granted') {
       new Notification(title, {

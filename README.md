@@ -4,10 +4,8 @@ Aplicación web progresiva (PWA) de lista de tareas con funcionalidades completa
 
 ## Características Implementadas
 
-### ✅ Requisitos Cumplidos
-
 1. **Pantallas de Splash y Home**
-   - Pantalla Splash con animación de carga (2 segundos)
+   - Pantalla Splash con animación de carga 
    - Pantalla Home con interfaz completa de gestión de tareas
 
 2. **Vistas del Cliente y Servidor**
@@ -33,10 +31,10 @@ Aplicación web progresiva (PWA) de lista de tareas con funcionalidades completa
 ## Tecnologías
 
 - React 19 + Vite
-- React Router DOM v7 (rutas)
-- LocalForage (almacenamiento local)
-- Service Workers (funcionalidad offline)
-- Express (SSR)
+- React Router DOM v7 
+- LocalForage 
+- Service Workers 
+- Express 
 - APIs Web: Notifications, Geolocation
 
 ## Instalación
@@ -47,7 +45,7 @@ npm install
 
 ## Desarrollo
 
-Necesitás correr DOS terminales:
+Correr 2 terminales 
 
 **Terminal 1 - Backend:**
 ```bash
@@ -61,7 +59,7 @@ npm run dev
 ```
 Esto inicia Vite con **HTTPS** en https://localhost:5173
 
-Abrí [https://localhost:5173](https://localhost:5173) en tu navegador
+Abrir [https://localhost:5173](https://localhost:5173) en el navegador
 
 **Nota**: El navegador te mostrará una advertencia de certificado (normal en desarrollo local). Click en "Avanzado" → "Continuar de todas formas".
 
@@ -71,16 +69,13 @@ Abrí [https://localhost:5173](https://localhost:5173) en tu navegador
 npm run build
 npm run serve
 ```
-
-**Nota sobre SSR**: Para cumplir el requisito de vistas generadas del servidor, el Service Worker actúa como capa de servidor cacheando y sirviendo recursos. En producción puedes implementar SSR completo con Express usando los archivos `server.js`, `entry-server.jsx` y `entry-client.jsx` incluidos.
-
 ## Funcionalidades
 
 ### Gestión de Tareas
-- ✅ Agregar nuevas tareas
-- ✅ Marcar como completadas
-- ✅ Eliminar tareas
-- ✅ Persistencia de datos offline
+- Agregar nuevas tareas
+- Marcar como completadas
+- Eliminar tareas
+- Persistencia de datos offline
 
 ### Indicadores
 - Estado de conexión (online/offline)
@@ -100,9 +95,8 @@ mi-pwa/
 ├── public/
 │   ├── manifest.json      # Configuración PWA
 │   ├── sw.js             # Service Worker
-│   ├── icon-192.png      # Icono 192x192
-│   └── icon-512.png      # Icono 512x512
-├── src/
+│   ├── icon-192.png      
+│   └── icon-512.png      
 │   ├── pages/
 │   │   ├── Splash.jsx    # Pantalla inicial
 │   │   ├── Splash.css
@@ -112,7 +106,7 @@ mi-pwa/
 │   ├── entry-client.jsx  # Entry point cliente
 │   ├── entry-server.jsx  # Entry point servidor
 │   └── index.css         # Estilos globales
-├── server.js             # Servidor Express (SSR opcional)
+├── server.js             # Servidor Express
 ├── db.json               # Base de datos JSON Server
 ├── index.html
 ├── package.json
@@ -122,7 +116,7 @@ mi-pwa/
 
 ## Backend con JSON Server
 
-El proyecto incluye un backend REST API completo usando JSON Server:
+El proyecto incluye un backend REST API
 
 - **Endpoint GET**: `http://localhost:3001/todos` - Obtener todas las tareas
 - **Endpoint POST**: `http://localhost:3001/todos` - Crear nueva tarea
@@ -139,18 +133,18 @@ Las tareas se guardan en `db.json` y se sincronizan automáticamente entre:
 La aplicación permite gestionar tareas diarias con las siguientes ventajas:
 
 - **Acceso offline**: Trabaja sin conexión a internet
-- **Sincronización**: Carga tareas desde tu backend local cuando hay conexión
+- **Sincronización**: Carga tareas desde el backend local cuando hay conexión
 - **Persistencia**: Datos en backend (db.json) y almacenamiento local
-- **Notificaciones**: Te mantiene informado de cambios
+- **Notificaciones**: Mantiene informado de cambios
 - **Ubicación**: Registra dónde creas las tareas (opcional)
 - **Multiplataforma**: Funciona en móviles, tablets y desktop
 
 ## Pruebas de Funcionalidad
 
 ### Probar Offline
-1. Abre DevTools > Application > Service Workers
+1. Abrir DevTools > Application > Service Workers
 2. Marca "Offline"
-3. Recarga la página - debe seguir funcionando
+3. Recargar la página  y sigue funcionando
 
 ### Probar Notificaciones
 1. Acepta permisos de notificaciones
@@ -158,9 +152,9 @@ La aplicación permite gestionar tareas diarias con las siguientes ventajas:
 3. Deberías ver una notificación del sistema
 
 ### Probar Geolocalización
-1. Click en botón "📍 Ubicación"
+1. Click en botón "Ubicación"
 2. Acepta permisos de ubicación
-3. Se mostrarán tus coordenadas GPS
+3. Se mostrarán las coordenadas GPS
 
 ### Probar Service Worker (Caché del Servidor)
 1. Ejecuta la app y ábrela en el navegador

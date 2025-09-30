@@ -8,7 +8,6 @@ const isProduction = process.env.NODE_ENV === 'production';
 const port = process.env.PORT || 5173;
 const base = process.env.BASE || '/';
 
-// Cached production assets
 const templateHtml = isProduction
   ? fs.readFileSync(path.resolve(__dirname, 'dist/client/index.html'), 'utf-8')
   : '';
@@ -16,10 +15,8 @@ const ssrManifest = isProduction
   ? fs.readFileSync(path.resolve(__dirname, 'dist/client/.vite/ssr-manifest.json'), 'utf-8')
   : undefined;
 
-// Create http server
 const app = express();
 
-// Add Vite or respective production middlewares
 let vite;
 if (!isProduction) {
   const { createServer } = await import('vite');
@@ -36,9 +33,7 @@ if (!isProduction) {
   app.use(base, sirv(path.resolve(__dirname, 'dist/client'), { extensions: [] }));
 }
 
-// Serve HTML
 app.use('*', async (req, res, next) => {
-  // Skip para archivos estáticos
   if (req.originalUrl.includes('.')) return next();
   try {
     const url = req.originalUrl.replace(base, '');
@@ -46,7 +41,6 @@ app.use('*', async (req, res, next) => {
     let template;
     let render;
     if (!isProduction) {
-      // Always read fresh template in development
       template = fs.readFileSync(path.resolve(__dirname, 'index.html'), 'utf-8');
       template = await vite.transformIndexHtml(url, template);
       render = (await vite.ssrLoadModule('/src/entry-server.jsx')).render;
@@ -69,7 +63,6 @@ app.use('*', async (req, res, next) => {
   }
 });
 
-// Start http server
 app.listen(port, () => {
   console.log(`Server started at http://localhost:${port}`);
 });
